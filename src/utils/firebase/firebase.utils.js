@@ -20,29 +20,39 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebasApp = initializeApp(firebaseConfig);
 
+// setting up authentication provider
 const provider = new GoogleAuthProvider();
 
 provider.setCustomParameters({
   prompt: "select_account",
 });
 
+// used to store the data in firebase authentication
 export const auth = getAuth();
 
+// sign in methods and storing in firebase authentication
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
+// export
 
+// used for firebase firestore
 export const db = getFirestore();
 
+// storing user data to firestore from firebase authentication
 export const createUserDocumentFromAuth = async (userAuth) => {
   const userDocRef = doc(db, "users", userAuth.uid);
 
   console.log("doc", userDocRef);
 
+  // snapshot the user data from firestore db
   const userSnapshot = await getDoc(userDocRef);
 
+  // checking to see if user data exist in google authentication record
   if (!userSnapshot.exists()) {
+    // get the specific records from cached record to display in firestore
     const { displayName, email } = userAuth;
     const createdAt = new Date();
 
+    // storing the specific record from cached records
     try {
       await setDoc(userDocRef, {
         displayName,

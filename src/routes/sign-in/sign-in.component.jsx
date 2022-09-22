@@ -5,7 +5,9 @@ import {
 
 const SignIn = () => {
   const logGoogleUser = async () => {
+    // storing the user data into firebase auth
     const { user } = await signInWithGooglePopup();
+    // storing user data into the firestore database
     const userDocRef = await createUserDocumentFromAuth(user);
   };
 
